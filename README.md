@@ -33,6 +33,7 @@ $ open http://localhost:8080
 
 ## Create new Pipeline Job
   - GitHub Project: `https://github.com/evgenyidf/jenkins-python.git/`
+  - Build Triggers: `GitHub hook trigger for GITScm polling`
   - Defenition: `Pipeline script from SCM`
     - repository: `https://github.com/evgenyidf/jenkins-python.git`
     - branch: `*/main`
