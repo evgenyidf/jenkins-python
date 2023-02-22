@@ -15,12 +15,14 @@
 # run docker-compose
 $ docker-compose up -d
 
-# Copy Jenkins file inside docker container
-$ docker cp Jenkinsfile `docker ps |grep jenkin |cut -d ' ' -f 1`:/tmp
 
-# Install SSH credentials plugin and add `github_secret` ssh private key to access github
-$ docker exec -ti  `docker ps |grep jenkin |cut -d ' ' -f 1` /bin/sh
-  => jenkins-plugin-cli --plugins instance-identity ssh-credentials credentials ionicons-api workflow-support script-security scm-api caffeine-api workflow-step-api workflow-api workflow-scm-step
+# Install extra packages and docker
+$ apt-get install apt-transport-https ca-certificates curl gnupg lsb-release software-properties-common -y
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+$ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu eoan stable"
+$ apt-get update
+$ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
 
 # Extract initial admin password
 $ docker exec -ti `docker ps |grep jenkin |cut -d ' ' -f 1` cat /var/jenkins_home/secrets/initialAdminPassword
@@ -28,3 +30,20 @@ $ docker exec -ti `docker ps |grep jenkin |cut -d ' ' -f 1` cat /var/jenkins_hom
 # Open a browser to 'http://localhost:8080
 $ open http://localhost:8080
 ```
+
+## Create new Pipeline Job
+  - GitHub Project: `https://github.com/evgenyidf/jenkins-python.git/`
+  - Build Triggers: `GitHub hook trigger for GITScm polling`
+  - Defenition: `Pipeline script from SCM`
+    - repository: `https://github.com/evgenyidf/jenkins-python.git`
+    - branch: `*/main`
+    - URL: `https://github.com/evgenyidf/jenkins-python`
+    - Script Path: `Jenkinsfile`
+
+Once you have created, you can create new PR and make a merge request, it will trigger new Job
+
+</br>
+</br>
+</br>
+
+[Note] There is additional `Jenkinsfile_main` that is intended to be triggered whenever you want
