@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/evgenyidf/jenkins-python.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("my-image:${env.BUILD_ID}")
+                }
+            }
+        }
+        stage('Run Command') {
+            steps {
+                script {
+                    docker.image("my-image:${env.BUILD_ID}").run()
+                }
+                sh 'docker ps'
+            }
+        }
+    }
+}

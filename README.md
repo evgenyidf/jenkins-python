@@ -20,7 +20,7 @@ $ docker cp Jenkinsfile `docker ps |grep jenkin |cut -d ' ' -f 1`:/tmp
 
 # Install SSH credentials plugin and add `github_secret` ssh private key to access github
 $ docker exec -ti  `docker ps |grep jenkin |cut -d ' ' -f 1` /bin/sh
-    jenkins-plugin-cli --plugins instance-identity ssh-credentials credentials
+  => jenkins-plugin-cli --plugins instance-identity ssh-credentials credentials ionicons-api workflow-support script-security scm-api caffeine-api workflow-step-api workflow-api workflow-scm-step
 
 # Extract initial admin password
 $ docker exec -ti `docker ps |grep jenkin |cut -d ' ' -f 1` cat /var/jenkins_home/secrets/initialAdminPassword
